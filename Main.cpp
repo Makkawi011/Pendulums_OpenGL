@@ -226,17 +226,17 @@ void DrowColumns(void)
 	glTranslatef(1.0f, 0.0f, 0.0f);
 
 	glBegin(GL_QUADS);
-	//left column
-	glVertex3f(-2.8f, -3.0f, 0.0f);
-	glVertex3f(-2.5f, -3.0f, 0.0f);
-	glVertex3f(-2.5f, 1.8f, 0.0f);
-	glVertex3f(-2.8f, 1.8f, 0.0f);
+		//left column
+		glVertex3f(-2.8f, -3.0f, 0.0f);
+		glVertex3f(-2.5f, -3.0f, 0.0f);
+		glVertex3f(-2.5f, 1.8f, 0.0f);
+		glVertex3f(-2.8f, 1.8f, 0.0f);
 
-	//right column
-	glVertex3f(2.8, -3.0f, 0.0f);
-	glVertex3f(2.5, -3.0f, 0.0f);
-	glVertex3f(2.5, 1.8f, 0.0f);
-	glVertex3f(2.8, 1.8f, 0.0f);
+		//right column
+		glVertex3f(2.8, -3.0f, 0.0f);
+		glVertex3f(2.5, -3.0f, 0.0f);
+		glVertex3f(2.5, 1.8f, 0.0f);
+		glVertex3f(2.8, 1.8f, 0.0f);
 	glEnd();
 
 }
@@ -245,10 +245,10 @@ void DrowBase(void)
 	glColor3f(0, 0, 0);
 
 	glBegin(GL_QUADS);
-	glVertex3f(-4.0f, -3.0f, 0.0f);
-	glVertex3f(4.0f, -3.0f, 0.0f);
-	glVertex3f(4.0f, -2.5f, 0.0f);
-	glVertex3f(-4.0f, -2.5f, 0.0f);
+		glVertex3f(-4.0f, -3.0f, 0.0f);
+		glVertex3f(4.0f, -3.0f, 0.0f);
+		glVertex3f(4.0f, -2.5f, 0.0f);
+		glVertex3f(-4.0f, -2.5f, 0.0f);
 	glEnd();
 
 }
@@ -302,7 +302,7 @@ int main(int argc, char** argv) {
 	//Create the window
 	glutCreateWindow("Pendulums");
 
-	
+
 
 	//Set handler functions
 	glutDisplayFunc(Drow);
