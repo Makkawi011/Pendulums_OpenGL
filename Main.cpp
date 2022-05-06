@@ -5,19 +5,13 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <gl/glut.h>
+#include <GLAUX.H>
 
 
 using namespace std;
 
-float _angle = 0.0f, _angle2 = 0.0f;
-const float DEG2RAD = 3.14159 / 180;
-float radius = 0.25;
-float b1_color = 0.0, b2_color = 0.0;
-int drc = 0, flage = 1, val;
-int numOfBall = 1;
-int speed = 100;
-
-
+//______________________
+// 
 /*  Create checkerboard texture  */
 #define checkImageWidth 64
 #define checkImageHeight 64
@@ -35,13 +29,15 @@ void makeCheckImage(void)
 			checkImage[i][j][0] = (GLubyte)c;
 			checkImage[i][j][1] = (GLubyte)c;
 			checkImage[i][j][2] = (GLubyte)c;
+			//checkImage[i][j][3] = (GLubyte)255;
+
 		}
 	}
 }
-void backgroundTexture_InLightSteelBlue(void)
+
+void Init(void)
 {
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(176/255.0f, 196 /255.0f, 222 /255.0f, 0.0);
 	glShadeModel(GL_FLAT);
 
 	makeCheckImage();
@@ -51,12 +47,21 @@ void backgroundTexture_InLightSteelBlue(void)
 	glBindTexture(GL_TEXTURE_2D, texName);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);;
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, checkImageHeight, 1, GL_RGB, GL_UNSIGNED_BYTE, checkImage);
 }
+//----------------------
+
+float _angle = 0.0f, _angle2 = 0.0f;
+const float DEG2RAD = 3.14159 / 180;
+float radius = 0.25;
+float b1_color = 0.0, b2_color = 0.0;
+int drc = 0, flage = 1, val;
+int numOfBall = 1;
+int speed = 100;
 
 void MoveBall2() {
 
@@ -108,8 +113,7 @@ void update(int value) {
 	//display has changed
 	glutPostRedisplay();
 
-	// call update again in (speed) 50 milliseconds and this (speed) 50 ms
-	//you can change it when you press space key
+	// call update again in (speed) 50 milliseconds and this (speed) 50 ms you can change it when you press space key
 	glutTimerFunc(speed, update, 0);
 }
 
@@ -119,6 +123,8 @@ void Resize(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
+
+	glMatrixMode(GL_MODELVIEW);
 }
 
 //Called when a key is pressed
@@ -128,7 +134,7 @@ void handleKeypress(unsigned char key, int x, int y) {
 	case 27: //Escape key
 		exit(0);
 		break;
-	case 32: //space key
+	case 32:
 		update(1);
 		break;
 	}
@@ -226,54 +232,45 @@ void DrowColumns(void)
 	glTranslatef(1.0f, 0.0f, 0.0f);
 
 	glBegin(GL_QUADS);
-		//left column
-		glVertex3f(-2.8f, -3.0f, 0.0f);
-		glVertex3f(-2.5f, -3.0f, 0.0f);
-		glVertex3f(-2.5f, 1.8f, 0.0f);
-		glVertex3f(-2.8f, 1.8f, 0.0f);
+	//left column
+	glVertex3f(-2.8f, -3.0f, 0.0f);
+	glVertex3f(-2.5f, -3.0f, 0.0f);
+	glVertex3f(-2.5f, 1.8f, 0.0f);
+	glVertex3f(-2.8f, 1.8f, 0.0f);
 
-		//right column
-		glVertex3f(2.8, -3.0f, 0.0f);
-		glVertex3f(2.5, -3.0f, 0.0f);
-		glVertex3f(2.5, 1.8f, 0.0f);
-		glVertex3f(2.8, 1.8f, 0.0f);
+	//right column
+	glVertex3f(2.8, -3.0f, 0.0f);
+	glVertex3f(2.5, -3.0f, 0.0f);
+	glVertex3f(2.5, 1.8f, 0.0f);
+	glVertex3f(2.8, 1.8f, 0.0f);
 	glEnd();
 
 }
 void DrowBase(void)
 {
-	glColor3f(0, 0, 0);
+	glEnable(GL_TEXTURE_2D);
 
 	glBegin(GL_QUADS);
-		glVertex3f(-4.0f, -3.0f, 0.0f);
-		glVertex3f(4.0f, -3.0f, 0.0f);
-		glVertex3f(4.0f, -2.5f, 0.0f);
-		glVertex3f(-4.0f, -2.5f, 0.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-4.0f, -3.0f, 0.0f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(4.0f, -3.0f, 0.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(4.0f, -2.5f, 0.0f);
+	glTexCoord2f(1.0, 0.0);	glVertex3f(-4.0f, -2.5f, 0.0f);
 	glEnd();
+
+	glFlush();
+
+	glDisable(GL_TEXTURE_2D);
 
 }
 
 void Drow() {
-
-	backgroundTexture_InLightSteelBlue();
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-	glBindTexture(GL_TEXTURE_2D, texName);
-
-	glTexCoord2f(0.0, 0.0);
-	glTexCoord2f(0.0, 1.0); ;
-	glTexCoord2f(1.0, 1.0);
-	glTexCoord2f(1.0, 0.0);
-
-
-	glFlush();
-	glDisable(GL_TEXTURE_2D);
-
-
 	glMatrixMode(GL_MODELVIEW); //Switch to the drawing perspective
 	glLoadIdentity(); //Reset the drawing perspective
+
+
+	Init();
+
 
 	glTranslatef(0.0f, 0.0f, -10.0f); //Move forward 10 units 
 
@@ -292,23 +289,24 @@ void Drow() {
 }
 
 
+
 int main(int argc, char** argv) {
 
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(1000, 800);
 
 	//Create the window
 	glutCreateWindow("Pendulums");
 
-
+	glClearColor(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 0.0);
+	glEnable(GL_DEPTH_TEST);
 
 	//Set handler functions
 	glutDisplayFunc(Drow);
-
-
 	glutKeyboardFunc(handleKeypress);
+
 	glutReshapeFunc(Resize);
 
 	glutMainLoop();
