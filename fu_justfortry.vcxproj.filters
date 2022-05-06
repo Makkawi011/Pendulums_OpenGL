@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\p.gif">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>
 </Project>
